@@ -37,7 +37,7 @@ Route::get('/delete/{Mobile_no}',function($Mobile_no){
 
 });
 
-
+Route::any('/sendsms','TestController@sms_send');
 Route::resource('/insert','Debtors_listingsController');
 
 Route::any('/mpesa/confirm', 'Debtors_listingsController@confirmTransaction');

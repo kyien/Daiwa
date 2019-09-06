@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+// namespace App\Libraries;
 
 use Illuminate\Http\Request;
 use App\Debtors_listings;
@@ -8,7 +9,7 @@ use App\payment;
 use App\ProcessingPayment;
 use Validator;
 use App\Http\Resources\Debtors_listings as Debtors_listingsResource; // modifies what you see on the front end
-
+use App\Libraries\Sms;
 
 use SmoDav\Mpesa\Laravel\Facades\STK;
 
@@ -99,9 +100,20 @@ class Debtors_listingsController extends Controller
     $processing_payment-> Amount_Paid = $Debtors_listings-> listing_option;
 
     if($processing_payment-> ResultCode==0){
+
+
+      $msisdn = $Debtors_listings-> Mobile_no;
+      $message = 'Hello '.$Debtors_listings-> Fullnames.' alias '.$Debtors_listings-> nickname_company.' you have been listed on daiwa sasa by $User for unpaid debt of Ksh.'.$Debtors_listings-> Amount_owed.'.This makes your debt status public. Pay $User, $Number to be delisted. You can also list those who owe you ';
+      $sms_id = rand(0000,9999);
+      $resp = $this->send_sms($msisdn,$message,$sms_id);
+
+
+
+
       $processing_payment->save();
       $Debtors_listings-> save();
 
+      // return $resp;
       // send sms after saving.
     }
     else {
@@ -252,5 +264,18 @@ public function confirmTransaction(Request $request)
 //     $transaction = $this->createTransaction($request, $invoice, Transaction::STATUS_COMPLETE);
 //     return $this->successfulResponse($transaction);
 }
+
+    public function send_sms( $msisdn,$message,$sms_id){
+
+        $mySms=array(
+            'msisdn'=>$msisdn,
+            'destination'=>'DAIWA_SASA',
+            'message'=>$message,
+            'sms_id'=> $sms_id
+        );
+        $sms=new Sms;
+        $res=$sms->sendMsg($mySms);
+    }
+
 
 }
