@@ -14,6 +14,23 @@ use App\User;
 |
 */
 
+//JWT Routes here for token based Authentication
+
+Route::group([
+
+  'middleware' => 'api',
+  // 'namespace' => 'App\Http\Controllers',
+  'prefix' => 'auth'
+
+], function () {
+
+  Route::post('login', 'AuthController@login');
+  Route::post('logout', 'AuthController@logout');
+  Route::post('refresh', 'AuthController@refresh');
+  Route::post('me', 'AuthController@me');
+
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -38,6 +55,13 @@ Route::get('/delete/{Mobile_no}',function($Mobile_no){
 });
 
 Route::any('/sendsms','TestController@sms_send');
-Route::resource('/insert','Debtors_listingsController');
+Route::post('/insert','DebtorsController@add_debtor');
 
-Route::any('/mpesa/confirm', 'Debtors_listingsController@confirmTransaction');
+Route::post('/stk/push', 'DebtorsController@mpesa_test');
+// Route::any('/mpesa/callback', 'DebtorsController@mpesa_res');
+// Route::post('/stk/callback', 'DebtorsController@mpesa_res');
+Route::post('/stk/callback', function(){
+  $data=file_get_contents('php://input');
+
+  echo $data;
+});

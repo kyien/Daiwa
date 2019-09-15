@@ -4,8 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
-class Debtors_listings extends Model
+
+class Debtor extends Model
 {
+  protected $table='debtors_listings';
+
   protected $fillable = [
    'Fullnames',
    'nickname_company',

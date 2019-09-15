@@ -7,6 +7,7 @@ use \GuzzleHttp\Client;
 use \GuzzleHttp\Exception\RequestException;
 
 use \GuzzleHttp\Psr7\Request;
+use App\SmsListing;
 
 class Sms {
 
@@ -38,28 +39,24 @@ class Sms {
         ]);
 
         // return $auth_obj;
-             echo $res->getBody();
+             return $res->getBody();
     }
 
     public function sendMsg($credentials){
         // echo $this->get_auth_token();
         $body=array();
-        // $credentials=array(
-        //   'msisdn'=>'254708003481',
-        //   'destination'=>'DAIWA_SASA',
-        //   'message'=>'HELLO MISTER',
-        //   'sms_id'=>'2342'
-        // );
-
+     
          array_push($body,$credentials);
          $json=json_encode($body);
 
-          //  $token=$this->get_auth_token();
-          //  $all= 'Bearer '.$token;
+           $tokenbody=json_decode($this->get_auth_token(),true);
+        //    $luck=$token["access_token"];
+
+           $token= 'Bearer '.$tokenbody["access_token"];
 
         $client=new \GuzzleHttp\Client([
             'headers'=>[
-            'Authorization'=>'Bearer 32925a3aa71a3a6985f8199ffc5dd66e7ace5094',
+            'Authorization'=> $token,
             'content-type' => 'application/json'
             ]
             ]);
@@ -69,8 +66,24 @@ class Sms {
             'body' =>$json
         ]);
 
-       echo $res->getBody();
+    //    echo $res->getBody();
 
-        // echo $json;
+       $feedback=json_decode($res->getBody());
+
+       if($feedback[0]->status == 100){
+            $sms_rec=SmsListing::create([
+                'recipient'=>$credentials['msisdn'],
+                'message' =>$credentials['message'],
+                'sms_id'=>$credentials['sms_id']
+            ]);
+            
+            return response()->json([
+                                'res'=>$sms_rec
+                            ],200);
+       }
+
+       return response()->json([
+                    'res'=>'unable to store sms'
+       ],417);
     }
 }

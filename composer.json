@@ -12,7 +12,10 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "smodav/mpesa": "^4.0"
+        "nesbot/carbon": "^2.24",
+        "samerior/mobile-money": "^1.1",
+        "smodav/mpesa": "^4.0",
+        "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

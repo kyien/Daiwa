@@ -40,9 +40,9 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
-            \App\Http\Middleware\Logging::class,
-            \App\Http\Middleware\HttpHeaders::class,
-            \App\Http\Middleware\TokenAuth::class,
+            // \App\Http\Middleware\Logging::class,
+            // \App\Http\Middleware\HttpHeaders::class,
+            // \App\Http\Middleware\TokenAuth::class,
         ],
     ];
 

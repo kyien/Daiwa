@@ -57,15 +57,15 @@ return [
 
         'production' => [
             'sandbox' => false,
-            'key' => '',
-            'secret' => '',
-            'initiator' => 'apitest363',
+            'key' => 'zPQKRM3XgRxWfJDk0yrP5GQc0lvRlhna',
+            'secret' => 'hnAHKAZmChQnuNUX',
+            'initiator' => 'MDDAIWA',
             'id_validation_callback' => 'http://example.com/callback?secret=some_secret_hash_key',
             'lnmo' => [
-                'paybill' => 174379,
-                'shortcode' => 174379,
-                'passkey' => 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
-                'callback' => 'http://example.com/callback?secret=some_secret_hash_key',
+                'paybill' => 759955,
+                'shortcode' => 759955,
+                'passkey' => '464c26b8414682630891a000921dba871ed5b300de1342e197d1ff2d4b801242',
+                'callback' => 'https://20dc32ad.ngrok.io/api/mpesa/callback?secret=CDBD82EC6F89FF7CA76F5990196AAF6FD2A11A8A6D87F881F94E3076296059C5',
             ]
         ],
     ],
