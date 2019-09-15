@@ -8,10 +8,11 @@ use App\payment;
 use App\ProcessingPayment;
 use App\Libraries\Sms;
 use App\Events\UserListed;
+use \Safaricom\Mpesa\Mpesa;
 use SmoDav\Mpesa\Laravel\Facades\STK;
 use Validator;
 use Auth;
-use App\Libraries\Mpesa;
+// use App\Libraries\Mpesa;
 
 class DebtorsController extends Controller
 {
@@ -70,17 +71,36 @@ class DebtorsController extends Controller
     }
 
     public function mpesa_test(){
+
+        $mpesa=new Mpesa();
         // $response = STK::push( 1, 254729636948 , 'DAIWA SASA LTD', 'Test Payment','production');
-        $mp=new Mpesa;
-        $mp->stk_push();
+        $stkPushSimulation=$mpesa->STKPushSimulation(
+            759955,
+           '464c26b8414682630891a000921dba871ed5b300de1342e197d1ff2d4b801242',
+           'CustomerPayBillOnline',
+            1, 
+            254713180118, 
+            759955, 
+            254713180118, 
+           'https://a368a0f9.ngrok.io/api/callback/mpesa', 
+           'Daiwa sasa',
+           'pay daiwa sasa ltd',
+           'happy life'
+              );
+
+
+    echo  $stkPushSimulation;
+        // $mp=new Mpesa;
+        // $mp->stk_push();
         // $res='listingggggggggg!';
         // echo $res;
         // return response()->json($response);
     }
-    public function mpesa_res(Request $request){
-       $array= json_decode($request,true);
-                print_r($array);
-       return response($array);
+    public function mpesa_res(){
+        $mpesa= new \Safaricom\Mpesa\Mpesa();
+
+        $callbackData = json_decode($mpesa->getDataFromCallback(),false);
+        echo $callbackData;
 
     }
 

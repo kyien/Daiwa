@@ -57,10 +57,10 @@ Route::get('/delete/{Mobile_no}',function($Mobile_no){
 Route::any('/sendsms','TestController@sms_send');
 Route::post('/insert','DebtorsController@add_debtor');
 
-Route::post('/stk/push', 'DebtorsController@mpesa_test');
+Route::any('/stk/push', 'DebtorsController@mpesa_test');
 // Route::any('/mpesa/callback', 'DebtorsController@mpesa_res');
 // Route::post('/stk/callback', 'DebtorsController@mpesa_res');
-Route::post('/stk/callback', function(){
+Route::any('/stk/callback', function(){
   $data=file_get_contents('php://input');
 
   echo $data;
