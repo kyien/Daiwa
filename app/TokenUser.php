@@ -19,7 +19,7 @@ class TokenUser extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','mobile_no','is_verified'
+        'name','mobile_no','verification_code'
     ];
 
     /**
@@ -28,7 +28,7 @@ class TokenUser extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 
     /**
@@ -37,20 +37,14 @@ class TokenUser extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-
-
+        'phone_verified_at' => 'datetime',
     ];
 
     public function debtors(){
 
-      return $this->hasMany('App\Debtors_listings');
+      return $this->hasMany('App\Debtor');
     }
 
-    public function role(){
-
-      return $this->belongsTo('App\Role');
-    }
 
     public function getJWTIdentifier()
     {
@@ -59,5 +53,17 @@ class TokenUser extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function hasVerifiedPhone()
+    {
+        return ! is_null($this->phone_verified_at);
+    }
+
+    public function markPhoneAsVerified()
+    {
+        return $this->forceFill([
+            'phone_verified_at' => $this->freshTimestamp(),
+        ])->save();
     }
 }

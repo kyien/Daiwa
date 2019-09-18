@@ -46,6 +46,12 @@ return [
             'provider' => 'users',
             // 'hash' => false,
         ],
+
+        'tokenuser' => [
+            'driver' => 'jwt',
+            'provider' => 'tokenuser',
+            // 'hash' => false,
+        ],
     ],
 
     /*
@@ -70,6 +76,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        
+        'tokenuser'=>[
+                'driver'=>'eloquent',
+                'model'=>App\TokenUser::class,
+            ]
+        
 
         // 'users' => [
         //     'driver' => 'database',

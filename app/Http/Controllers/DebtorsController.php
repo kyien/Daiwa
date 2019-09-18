@@ -79,10 +79,10 @@ class DebtorsController extends Controller
            '464c26b8414682630891a000921dba871ed5b300de1342e197d1ff2d4b801242',
            'CustomerPayBillOnline',
             1, 
-            254713180118, 
+            254729636948, 
             759955, 
-            254713180118, 
-           'https://a368a0f9.ngrok.io/api/callback/mpesa', 
+            254729636948, 
+           'https://a5385ea2.ngrok.io/api/callback/mpesa', 
            'Daiwa sasa',
            'pay daiwa sasa ltd',
            'happy life'
@@ -102,7 +102,14 @@ class DebtorsController extends Controller
         $callbackData = json_decode($mpesa->getDataFromCallback(),false);
         echo $callbackData;
 
-    }
+
+        // if ($callbackData->Body->stkCallback->ResultCode === 0) {
+        //     // Handle success (e.g. Update the transaction with an equal MerchantRequestID/CheckoutRequestID to "complete" status)
+        //     echo 'seccessssssss!';
+        // }
+        $mpesa->finishTransaction();
+        
+             }
 
     // public function delist_user(){
 

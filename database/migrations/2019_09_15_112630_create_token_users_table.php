@@ -14,7 +14,12 @@ class CreateTokenUsersTable extends Migration
     public function up()
     {
         Schema::create('token_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('name');
+            $table->string('mobile_no')->unique();
+            $table->string('verification_code')->unique()->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

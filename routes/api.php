@@ -59,9 +59,9 @@ Route::post('/insert','DebtorsController@add_debtor');
 
 Route::any('/stk/push', 'DebtorsController@mpesa_test');
 // Route::any('/mpesa/callback', 'DebtorsController@mpesa_res');
-// Route::post('/stk/callback', 'DebtorsController@mpesa_res');
-Route::any('/stk/callback', function(){
-  $data=file_get_contents('php://input');
+Route::any('/stk/callback', 'DebtorsController@mpesa_res');
+// Route::any('/stk/callback', function(){
+//   $data=file_get_contents('php://input');
 
-  echo $data;
-});
+//   echo $data;
+// });

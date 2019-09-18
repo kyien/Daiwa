@@ -15,7 +15,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('assign.guard:tokenuser', ['except' => ['login']]);
     }
 
     /**
@@ -84,13 +84,8 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\Guard
-     */
     public function guard()
     {
-        return Auth::guard();
+        return Auth::guard('tokenuser');
     }
 }
