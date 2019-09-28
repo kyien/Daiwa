@@ -77,13 +77,13 @@ class Sms {
                 'sms_id'=>$credentials['sms_id']
             ]);
             
-            return response()->json([
-                                'res'=>$sms_rec
-                            ],200);
+            // return response()->json([
+            //                     'res'=>$sms_rec
+            //                 ],200);
        }
 
-       return response()->json([
-                    'res'=>'unable to store sms'
-       ],417);
+    //    return response()->json([
+    //                 'res'=>'unable to store sms'
+    //    ],417);
     }
 }

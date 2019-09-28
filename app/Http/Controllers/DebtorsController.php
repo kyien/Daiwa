@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Debtor;
-use App\payment;
+use App\Payment;
 use App\ProcessingPayment;
 use App\Libraries\Sms;
 use App\Events\UserListed;
@@ -17,11 +17,25 @@ use Auth;
 class DebtorsController extends Controller
 {
     //
+
+    public function __construct()
+    {
+        $this->middleware(['assign.guard:tokenuser','verifiedphone']);
+    }
+
     public function add_debtor(Request $request){
 
             //validation
         $rules = [
-            'Fullnames' => 'required|max:20',
+            'Fullnames' => 'required|string|max:50',
+            'nickname_company' => 'required|string|max:50',
+            'Mobile_no' => 'required|numeric|digits_between:10,12',
+            'Amount_owed'=>'required|numeric',
+            'debt_age'=>'required|numeric',
+            'type_of_debt'=>'required|string',
+            'listing_option'=>'required'
+
+    
     
           ]; // creating an array of rules
           $validator = Validator::make($request->all(),  $rules); // checking the request agaainst the rules
@@ -31,25 +45,25 @@ class DebtorsController extends Controller
           }
 
 
-          //switch listing options
+         // switch listing options
 
-        //   switch($request -> input('listing_option')){
-        //         case 'A':
-        //         $response = STK::push( 20, 254708003481 , 'Daiwa', 'Test Payment');
-        //         case 'B':
-        //         $response = STK::push( 50, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
-        //         case 'C':
-        //         $response = STK::push( 100, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
-        //         case 'D':
-        //         $response = STK::push( 150, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
-        //         case 'E':
-        //         $response = STK::push( 200, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
-        //     default: 
-        //     $reponse = 'invalid option';
+          switch($request -> input('listing_option')){
+                case 1:
+                $response = STK::push( 20, 254708003481 , 'Daiwa', 'Test Payment');
+                case 2:
+                $response = STK::push( 50, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
+                case 3:
+                $response = STK::push( 100, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
+                case 4:
+                $response = STK::push( 150, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
+                case 5:
+                $response = STK::push( 200, Auth::user()-> mobile_no , 'Daiwa', 'Test Payment');
+            default: 
+            $reponse = 'invalid option';
             
-        //     }
+            }
 
-        //     echo $response;
+             $code='DWS_'.mt_rand(000000,999999);
 
         $debtor=Debtor::create([
            'Fullnames'=> $request -> input('Fullnames'),
@@ -58,43 +72,43 @@ class DebtorsController extends Controller
            'Mobile_no'=>$request ->input('Mobile_no'),
            'type_of_debt'=>$request -> input('type_of_debt'),
            'debt_age'=>$request -> input('debt_age'),
-           'users_id'=>$request->input('user'),
+           'users_id'=>Auth::guard('tokenuser')->user()->id,
            'listing_option'=> $request -> input('listing_option'),
-           'code'=>rand(1,10000)
+           'code'=>$code
         ]);
 
         if($debtor){
-            event(new UserListed($debtor));
+            // event(new UserListed($debtor));
+            echo "success";
         }
-    
+      else{
+          echo "failure!";
+      }
 
     }
 
     public function mpesa_test(){
+            // $user=Auth::guard('tokenuser')->user()->mobile_no;
+            // echo $user;
+         
+        $response = STK::push( 1,Auth::guard('tokenuser')->user()->mobile_no,'DAIWA SASA LTD', 'Service Payment','production');
+        
+            sleep(20);
 
-        $mpesa=new Mpesa();
-        // $response = STK::push( 1, 254729636948 , 'DAIWA SASA LTD', 'Test Payment','production');
-        $stkPushSimulation=$mpesa->STKPushSimulation(
-            759955,
-           '464c26b8414682630891a000921dba871ed5b300de1342e197d1ff2d4b801242',
-           'CustomerPayBillOnline',
-            1, 
-            254729636948, 
-            759955, 
-            254729636948, 
-           'https://a5385ea2.ngrok.io/api/callback/mpesa', 
-           'Daiwa sasa',
-           'pay daiwa sasa ltd',
-           'happy life'
-              );
+            $m_ID=$response->MerchantRequestID;
 
+            $payment=Payment::where('MerchantRequestID',$m_ID)->first();
 
-    echo  $stkPushSimulation;
-        // $mp=new Mpesa;
-        // $mp->stk_push();
-        // $res='listingggggggggg!';
-        // echo $res;
-        // return response()->json($response);
+            if($payment){
+
+                echo "paid";
+            }
+
+            else{
+                echo "not paid";
+            }
+       
+        // return response()->json($response->MerchantRequestID);
     }
     public function mpesa_res(){
         $mpesa= new \Safaricom\Mpesa\Mpesa();

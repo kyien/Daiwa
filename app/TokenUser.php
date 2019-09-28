@@ -19,7 +19,7 @@ class TokenUser extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name','mobile_no','verification_code'
+        'firstname','lastname','location','mobile_no','verification_code'
     ];
 
     /**
@@ -42,7 +42,7 @@ class TokenUser extends Authenticatable implements JWTSubject
 
     public function debtors(){
 
-      return $this->hasMany('App\Debtor');
+      return $this->belongsToMany('App\Debtor');
     }
 
 

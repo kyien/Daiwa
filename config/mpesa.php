@@ -65,7 +65,7 @@ return [
                 'paybill' => 759955,
                 'shortcode' => 759955,
                 'passkey' => '464c26b8414682630891a000921dba871ed5b300de1342e197d1ff2d4b801242',
-                'callback' => 'https://20dc32ad.ngrok.io/api/mpesa/callback?secret=CDBD82EC6F89FF7CA76F5990196AAF6FD2A11A8A6D87F881F94E3076296059C5',
+                'callback' => 'https://node.daiwasasa.co.ke/hooks/mpesa',
             ]
         ],
     ],

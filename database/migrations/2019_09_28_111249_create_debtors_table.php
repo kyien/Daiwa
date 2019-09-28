@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDebtorsListingsTable extends Migration
+class CreateDebtorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateDebtorsListingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('debtors_listings', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('debtors', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('Fullnames');
             $table->string('nickname_company', 30);
             $table->integer('Amount_owed')->unsigned();
@@ -26,8 +26,8 @@ class CreateDebtorsListingsTable extends Migration
             $table->string('code');
             $table->timestamps();
 
-            
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('token_users')->onDelete('cascade');
+
         });
     }
 
@@ -38,6 +38,6 @@ class CreateDebtorsListingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('debtors_listings');
+        Schema::dropIfExists('debtors');
     }
 }

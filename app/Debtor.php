@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User;
+use App\TokenUser;
 
 class Debtor extends Model
 {
-  protected $table='debtors_listings';
+  protected $table='debtors';
 
   protected $fillable = [
    'Fullnames',
@@ -20,8 +20,8 @@ class Debtor extends Model
    'listing_option',
    'code',
 ];
-// public function users(){
-//
-//   return $this->hasMany(App\User);
-// }
+public function users(){
+
+  return $this->belongsToMany('App\TokenUser');
+}
 }

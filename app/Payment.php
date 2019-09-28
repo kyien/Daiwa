@@ -4,8 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class payment extends Model
+class Payment extends Model
+
 {
+
+  protected $table='payments';
+
   protected $fillable = [
 
   'MerchantRequestID',
@@ -14,7 +18,8 @@ class payment extends Model
   'ResultDesc',
   'Mobile_No',
   'Amount_Paid',
-
+  'Receipt_No',
+  'Transaction_Date'
 ];
 
 }
